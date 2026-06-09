@@ -1,0 +1,65 @@
+pipeline{
+    agent any
+    environment{
+        aws_account_id = "714950921830"
+        aws_region = "ap-south-1"
+        image_name = "ecommerce"
+        github_token = "g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"
+        git_user = "shahir-devops"
+        git_repo = "ecomerce-end-to-end"
+    }
+    tools {
+        maven 'maven 3.9.16'
+    }
+    stages{
+        stage("checkout_git"){
+            steps{
+                git branch: 'main', credentialsId: 'git_cred', url: 'https://github.com/shahir-devops/ecomerce-end-to-end.git'
+            }
+        }
+        stage("mvn_build"){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        stage("docker build"){
+            steps{
+                dir('frontend'){
+                    sh '''
+                        docker system prune -f
+                        docker build -t ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${buildnumber} .
+                    '''
+                }
+            }
+        }
+        stage("docker_push"){
+            steps{
+                sh '''
+                    aws ecr get-login-password --region ${aws_region} \
+                    | docker login --username AWS --password-stdin \
+                    ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
+
+                    docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${buildnumber}
+                    '''
+            }
+        }
+        stage('update image'){
+            steps{
+                dir("kubernetes"){
+                    sh '''
+                       git config user.email "shahirsyeed@gmail.com"
+                       git config user.name "shahir-syed"
+                       
+                       sed -i "s#image:.*#image: ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${BUILD_NUMBER}#g" fe-deployment.yml
+
+                       git add .
+                       git commit -m "updated code on jenkin ${image_name}:${BUILD_NUMBER}"
+                       git push https://${github_token}@github.com/${git_user}/${git_repo}.git HEAD:main
+                       
+                    '''
+                }
+            }
+        }
+
+    }
+}
