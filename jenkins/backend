@@ -22,7 +22,7 @@ pipeline{
                 dir('frontend'){
                     sh '''
                         docker system prune -f
-                        docker build -t ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${buildnumber} .
+                        docker build -t ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${BUILD_NUMBER} .
                     '''
                 }
             }
@@ -34,7 +34,7 @@ pipeline{
                     | docker login --username AWS --password-stdin \
                     ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
 
-                    docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${buildnumber}
+                    docker push ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_name}:${BUILD_NUMBER}
                     '''
             }
         }
