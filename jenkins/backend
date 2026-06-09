@@ -7,9 +7,6 @@ pipeline{
         git_user = "shahir-devops"
         git_repo = "ecomerce-end-to-end"
     }
-    tools {
-        maven 'maven 3.9.16'
-    }
     stages{
         stage("checkout_git"){
             steps{
