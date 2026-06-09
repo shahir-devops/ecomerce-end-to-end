@@ -4,7 +4,6 @@ pipeline{
         aws_account_id = "714950921830"
         aws_region = "ap-south-1"
         image_name = "ecommerce-be"
-        github_token = "g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"
         git_user = "shahir-devops"
         git_repo = "ecomerce-end-to-end"
     }
@@ -40,6 +39,7 @@ pipeline{
         }
         stage('update image'){
             steps{
+                withCredentials([string(credentialsId: 'git_pat', variable: 'git_Pat')]) {
                 dir("kubernetes"){
                     sh '''
                        git config user.email "shahirsyeed@gmail.com"
@@ -49,9 +49,10 @@ pipeline{
 
                        git add .
                        git commit -m "updated code on jenkin ${image_name}:${BUILD_NUMBER}"
-                       git push https://${github_token}@github.com/${git_user}/${git_repo}.git HEAD:main
+                       git push https://${git_Pat}@github.com/${git_user}/${git_repo}.git HEAD:main
                        
                     '''
+                }
                 }
             }
         }
