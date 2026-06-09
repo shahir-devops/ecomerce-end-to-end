@@ -17,11 +17,6 @@ pipeline{
                 git branch: 'main', credentialsId: 'git_cred', url: 'https://github.com/shahir-devops/ecomerce-end-to-end.git'
             }
         }
-        stage("mvn_build"){
-            steps{
-                sh "mvn clean package"
-            }
-        }
         stage("docker build"){
             steps{
                 dir('frontend'){
