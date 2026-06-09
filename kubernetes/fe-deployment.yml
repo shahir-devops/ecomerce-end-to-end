@@ -14,7 +14,7 @@ spec:
     spec:
       containers
       - name frontend
-        image: frontend
+        image: 714950921830.dkr.ecr.ap-south-1.amazonaws.com/ecommerce:5
         ports:
         - containerPort: 80
 ---
