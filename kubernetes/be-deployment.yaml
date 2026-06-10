@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 714950921830.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-be:3
+        image: 714950921830.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-be:5
         ports:
-        - containerPort: 80
+        - containerPort: 3000
         env:
         - name: DB_HOST
           valueFrom:
@@ -56,4 +56,4 @@ spec:
     app: backend
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 3000
