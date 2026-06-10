@@ -16,14 +16,14 @@ const db = mysql.createConnection({
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   port: process.env.PORT,
-  database: "test",
+  database: "mydb",
 });
 
 app.get("/", (req, res) => {
   res.json("hello");
 });
 
-app.get("/books", (req, res) => {
+app.get("/api/books", (req, res) => {
   const q = "SELECT * FROM books";
   db.query(q, (err, data) => {
     if (err) {
@@ -34,7 +34,7 @@ app.get("/books", (req, res) => {
   });
 });
 
-app.post("/books", (req, res) => {
+app.post("/api/books", (req, res) => {
   const q = "INSERT INTO books(`title`, `desc`, `price`, `cover`) VALUES (?)";
 
   const values = [
@@ -50,7 +50,7 @@ app.post("/books", (req, res) => {
   });
 });
 
-app.delete("/books/:id", (req, res) => {
+app.delete("/api/books/:id", (req, res) => {
   const bookId = req.params.id;
   const q = " DELETE FROM books WHERE id = ? ";
 
@@ -60,7 +60,7 @@ app.delete("/books/:id", (req, res) => {
   });
 });
 
-app.put("/books/:id", (req, res) => {
+app.put("/api/books/:id", (req, res) => {
   const bookId = req.params.id;
   const q = "UPDATE books SET `title`= ?, `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?";
 
@@ -77,6 +77,6 @@ app.put("/books/:id", (req, res) => {
   });
 });
 
-app.listen(80, () => {
+app.listen(3000, () => {
   console.log("Connected to backend.");
 });
