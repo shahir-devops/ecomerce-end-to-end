@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 714950921830.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-be:6
+        image: 714950921830.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-be:7
         ports:
         - containerPort: 3000
         env:
