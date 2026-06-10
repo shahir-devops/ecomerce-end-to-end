@@ -36,7 +36,7 @@ pipeline{
         }
         stage('update image'){
             steps{
-                withCredentials([string(credentialsId: 'git_pat', variable: 'git_Pat')]) {
+                withCredentials([string(credentialsId: 'git_Pat', variable: 'git_Pat')]) {
                 dir("kubernetes"){
                     sh '''
                        git config user.email "shahirsyeed@gmail.com"
